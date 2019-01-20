@@ -6,20 +6,23 @@ import { TabsPage } from "../pages/tabs/tabs";
 import { SigninPage } from "../pages/signin/signin";
 import { SignupPage } from "../pages/signup/signup";
 import firebase from "firebase";
+import { AuthService } from "../services/auth";
 
 @Component({
   templateUrl: "app.html"
 })
 export class MyApp {
-  tabsPage: any = TabsPage;
+  rootPage: any = TabsPage;
   signinPage: any = SigninPage;
   signupPage: any = SignupPage;
+  isAuthenticated = false;
   @ViewChild("nav") nav: NavController;
   constructor(
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private authService: AuthService
   ) {
     firebase.initializeApp({
       apiKey: "AIzaSyDFGzmnhXruAwFTnXYIVBmJKhT6uiXJn1I",
@@ -29,8 +32,22 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.isAuthenticated = true;
+        this.rootPage = TabsPage;
+      } else {
+        this.isAuthenticated = false;
+        this.rootPage = SigninPage;
+      }
+    });
   }
-  onLogout() {}
+  onLogout() {
+    this.authService.logout();
+    this.menuCtrl.close();
+    this.nav.setRoot(SigninPage);
+  }
   onLoad(page: any) {
     this.nav.setRoot(page);
     this.menuCtrl.close();
