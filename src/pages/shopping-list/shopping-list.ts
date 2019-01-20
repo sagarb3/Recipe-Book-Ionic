@@ -9,6 +9,7 @@ import { NgForm } from "@angular/forms";
 import { ShoppingListService } from "../../services/shoppingList.service";
 import { Ingredient } from "../../models/ingredient";
 import { SLOptionsPage } from "./sl-options/sl-options";
+import { AuthService } from "../../services/auth";
 
 @IonicPage()
 @Component({
@@ -20,7 +21,8 @@ export class ShoppingListPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private slService: ShoppingListService,
-    private popOverCtrl: PopoverController
+    private popOverCtrl: PopoverController,
+    private authService: AuthService
   ) {}
   ingredientList: Ingredient[] = [];
   ionViewWillEnter() {
@@ -42,5 +44,17 @@ export class ShoppingListPage {
   onShowOptions(event: MouseEvent) {
     const popover = this.popOverCtrl.create(SLOptionsPage);
     popover.present({ ev: event });
+    popover.onDidDismiss(data => {
+      if (data.action == "load") {
+      } else {
+        this.authService
+          .getActiveUser()
+          .getIdToken()
+          .then((token: string) => {})
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    });
   }
 }
