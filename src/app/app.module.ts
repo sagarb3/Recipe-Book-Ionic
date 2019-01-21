@@ -15,7 +15,8 @@ import { RecipesService } from "../services/recipes";
 import { SigninPage } from "../pages/signin/signin";
 import { SignupPage } from "../pages/signup/signup";
 import { AuthService } from "../services/auth";
-import { SLOptionsPage } from "../pages/shopping-list/sl-options/sl-options";
+import { DatabaseOptionsPage } from "../pages/database-options/database-options";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -27,9 +28,9 @@ import { SLOptionsPage } from "../pages/shopping-list/sl-options/sl-options";
     TabsPage,
     SigninPage,
     SignupPage,
-    SLOptionsPage
+    DatabaseOptionsPage
   ],
-  imports: [BrowserModule, IonicModule.forRoot(MyApp)],
+  imports: [BrowserModule, IonicModule.forRoot(MyApp), HttpClientModule],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
@@ -40,7 +41,7 @@ import { SLOptionsPage } from "../pages/shopping-list/sl-options/sl-options";
     TabsPage,
     SigninPage,
     SignupPage,
-    SLOptionsPage
+    DatabaseOptionsPage
   ],
   providers: [
     StatusBar,
